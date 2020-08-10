@@ -1,0 +1,25 @@
+version: "3"
+services:
+  db_mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+    ports:
+      - 3306:3306
+    volumes:
+      # Volume dos dados
+      - ./myapp/dados:/var/lib/mysql
+  app_wordpress:
+    image: wordpress:latest
+    environment:
+      WORDPRESS_DB_HOST: 192.168.0.15:3306
+      WORDPRESS_DB_PASSWORD: 12345678
+      WORDPRESS_DB_NAME: dbwordpress
+      WORDPRESS_TABLE_PREFIX: wpblog
+    ports:
+      - 8080:80
+    volumes:
+      # Aplicação
+      - ./myapp/blog:/var/www/html
+    depends_on:
+      - db_mysql
